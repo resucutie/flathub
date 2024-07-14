@@ -1,0 +1,41 @@
+app-id: io.github.resucutie.localbooru
+runtime: org.freedesktop.Platform
+runtime-version: '23.08'
+sdk: org.freedesktop.Sdk
+command: localbooru
+finish-args:
+  - --socket=fallback-x11
+  - --socket=wayland
+
+modules:
+  - libmpv.yml
+  - name: patchelf
+    buildsystem: autotools
+    cleanup:
+      - '*'
+    sources:
+      - type: git
+        url: https://github.com/NixOS/patchelf.git
+        tag: 0.17.2
+        commit: 5908e16cd562bcb1909be4de0409c4912a8afc52
+
+  - name: localbooru
+    buildsystem: simple
+    build-commands:
+      - install -Dm755 -t /app/bin/ localbooru
+      - ls
+      - mkdir -p /app/bin/data
+      - mv flutter_assets icudtl.dat /app/bin/data
+      - mkdir -p /app/bin/lib
+      - patchelf --replace-needed libmpv.so.1 libmpv.so.2 libmedia_kit*.so
+      - mv *.so /app/bin/lib
+      - install -Dm655 -t /app/share/applications/ io.github.resucutie.localbooru.desktop
+      - install -Dm655 -t /app/share/icons/hicolor/scalable/apps io.github.resucutie.localbooru.svg
+    sources:
+      - type: archive
+        url: https://github.com/resucutie/localbooru/releases/download/1.5.2/localbooru-linux-binaries.zip
+        sha256: c3b44145ad9895b1980967248e9b33f784ef420450620409ecefa6b1671e4c91
+      - type: file
+        path: io.github.resucutie.localbooru.desktop
+      - type: file
+        path: io.github.resucutie.localbooru.svg

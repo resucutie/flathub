@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=localbooru
+Description=Local booru collection
+Terminal=false
+Exec=localbooru
+Icon=io.github.resucutie.localbooru
+Type=Application
