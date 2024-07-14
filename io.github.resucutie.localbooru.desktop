@@ -1,6 +1,6 @@
 [Desktop Entry]
-Name=localbooru
-Description=Local booru collection
+Name=LocalBooru
+Description=Cross platform local booru collection that exclusively works on local storage, without selfhosting
 Terminal=false
 Exec=localbooru
 Icon=io.github.resucutie.localbooru
